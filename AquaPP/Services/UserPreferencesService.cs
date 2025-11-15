@@ -7,7 +7,7 @@ namespace AquaPP.Services
     public class UserPreferencesService
     {
         private readonly string _preferencesFilePath;
-        private UserPreferences _preferences;
+        private UserPreferences _preferences = new();
 
         public UserPreferencesService(string preferencesFilePath)
         {
@@ -32,7 +32,7 @@ namespace AquaPP.Services
             if (System.IO.File.Exists(_preferencesFilePath))
             {
                 var jsonString = System.IO.File.ReadAllText(_preferencesFilePath);
-                _preferences = JsonSerializer.Deserialize<UserPreferences>(jsonString);
+                _preferences = JsonSerializer.Deserialize<UserPreferences>(jsonString) ?? new UserPreferences();
             }
             else
             {

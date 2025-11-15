@@ -17,7 +17,7 @@ namespace AquaPP.ViewModels.Pages;
 
 public partial class ChatViewModel : PageBase
 {
-    private readonly Agent _agent;
+    private readonly Agent? _agent;
     private readonly ILogger _logger;
     private readonly ISukiToastManager _toastService;
 
@@ -41,7 +41,16 @@ public partial class ChatViewModel : PageBase
         _logger = logger;
         _toastService = toastManager;
 
-        _agent = new Agent(logger);
+        try
+        {
+            _agent = new Agent(logger);
+        }
+        catch (InvalidOperationException ex)
+        {
+            _logger.Warning(ex, "Agent initialization failed. Chat functionality will be disabled.");
+            _agent = null;
+        }
+        
         Messages = [];
         SendCommand = new AsyncRelayCommand(SendMessage);
 
@@ -58,6 +67,17 @@ public partial class ChatViewModel : PageBase
     {
         if (string.IsNullOrWhiteSpace(Message))
         {
+            return;
+        }
+
+        if (_agent == null)
+        {
+            _toastService.CreateToast()
+                .WithTitle("Chat Unavailable")
+                .WithContent("Chat functionality is disabled. Please set the GOOGLE_API_KEY environment variable and restart the application.")
+                .Dismiss().After(TimeSpan.FromSeconds(5))
+                .Dismiss().ByClicking()
+                .Queue();
             return;
         }
 

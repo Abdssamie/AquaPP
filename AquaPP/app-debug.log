@@ -63,3 +63,43 @@ LIMIT 1
 2025-08-22 12:34:52.214 +01:00 [INF] Executed DbCommand (3ms) [Parameters=[@p0='5fbd3740-d73e-4f43-a57a-3c6577d7aedf', @p1='13', @p2='434', @p3='Blackburn' (Nullable = false) (Size = 9), @p4='Probe' (Nullable = false) (Size = 5), @p5='13', @p6='860543896' (Nullable = false) (Size = 9), @p7='2025-08-22T12:34:29.0000000' (DbType = DateTime), @p8='450'], CommandType='"Text"', CommandTimeout='30']
 INSERT INTO "WaterQualityReadings" ("Id", "ChlorineResidual", "Conductivity", "Location", "Notes", "PH", "SampleId", "TimeStamp", "Turbidity")
 VALUES (@p0, @p1, @p2, @p3, @p4, @p5, @p6, @p7, @p8);
+2025-11-15 14:33:13.804 +01:00 [ERR] Google API Key not found. Please set the GOOGLE_API_KEY environment variable.
+2025-11-15 14:36:11.002 +01:00 [ERR] Google API Key not found. Please set the GOOGLE_API_KEY environment variable.
+2025-11-15 14:41:23.649 +01:00 [ERR] Google API Key not found. Please set the GOOGLE_API_KEY environment variable.
+2025-11-15 14:43:47.441 +01:00 [WRN] Google API Key not found. Chat functionality will be disabled. Set the GOOGLE_API_KEY environment variable to enable it.
+2025-11-15 14:43:47.576 +01:00 [WRN] Agent initialization failed. Chat functionality will be disabled.
+System.InvalidOperationException: Google API Key not found. Please set the GOOGLE_API_KEY environment variable.
+   at AquaPP.AI.Agent..ctor(ILogger logger) in /home/abdssamie/RiderProjects/AquaPP/AquaPP/AI/Agent.cs:line 38
+   at AquaPP.ViewModels.Pages.ChatViewModel..ctor(ISukiToastManager toastManager, ILogger logger) in /home/abdssamie/RiderProjects/AquaPP/AquaPP/ViewModels/Pages/ChatViewModel.cs:line 46
+2025-11-15 14:43:47.608 +01:00 [INF] ChatViewModel initialized.
+2025-11-15 14:43:47.618 +01:00 [INF] DataEntryViewModel initialized.
+2025-11-15 14:43:48.780 +01:00 [WRN] Sensitive data logging is enabled. Log entries and exception messages may include sensitive application data; this mode should only be enabled during development.
+2025-11-15 14:43:48.978 +01:00 [INF] No migrations were found in assembly 'AquaPP'. A migration needs to be added before the database can be updated.
+2025-11-15 14:43:49.122 +01:00 [INF] Executed DbCommand (26ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+PRAGMA journal_mode = 'wal';
+2025-11-15 14:43:49.147 +01:00 [INF] Acquiring an exclusive lock for migration application. See https://aka.ms/efcore-docs-migrations-lock for more information if this takes too long.
+2025-11-15 14:43:49.168 +01:00 [INF] Executed DbCommand (8ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+SELECT COUNT(*) FROM "sqlite_master" WHERE "name" = '__EFMigrationsLock' AND "type" = 'table';
+2025-11-15 14:43:49.178 +01:00 [INF] Executed DbCommand (5ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+CREATE TABLE IF NOT EXISTS "__EFMigrationsLock" (
+    "Id" INTEGER NOT NULL CONSTRAINT "PK___EFMigrationsLock" PRIMARY KEY,
+    "Timestamp" TEXT NOT NULL
+);
+2025-11-15 14:43:49.189 +01:00 [INF] Executed DbCommand (2ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+INSERT OR IGNORE INTO "__EFMigrationsLock"("Id", "Timestamp") VALUES(1, '2025-11-15 13:43:49.1862608+00:00');
+SELECT changes();
+2025-11-15 14:43:49.766 +01:00 [INF] Executed DbCommand (0ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+CREATE TABLE IF NOT EXISTS "__EFMigrationsHistory" (
+    "MigrationId" TEXT NOT NULL CONSTRAINT "PK___EFMigrationsHistory" PRIMARY KEY,
+    "ProductVersion" TEXT NOT NULL
+);
+2025-11-15 14:43:49.794 +01:00 [INF] Executed DbCommand (0ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+SELECT COUNT(*) FROM "sqlite_master" WHERE "name" = '__EFMigrationsHistory' AND "type" = 'table';
+2025-11-15 14:43:49.804 +01:00 [INF] Executed DbCommand (1ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+SELECT "MigrationId", "ProductVersion"
+FROM "__EFMigrationsHistory"
+ORDER BY "MigrationId";
+2025-11-15 14:43:49.827 +01:00 [INF] No migrations were applied. The database is already up to date.
+2025-11-15 14:43:49.837 +01:00 [INF] Executed DbCommand (1ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+DELETE FROM "__EFMigrationsLock";
+2025-11-15 14:46:32.673 +01:00 [INF] Successfully exported water quality data to /home/abdssamie/Documents/test.csv

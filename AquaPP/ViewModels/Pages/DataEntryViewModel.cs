@@ -196,25 +196,29 @@ public partial class DataEntryViewModel : PageBase
 
 
     [RelayCommand]
-    private async Task LoadAllReadingsAsync()
+    private Task LoadAllReadingsAsync()
     {
+        return Task.CompletedTask;
     }
 
     [RelayCommand]
-    private async Task LoadCurrentDateReadingsAsync()
+    private Task LoadCurrentDateReadingsAsync()
     {
+        return Task.CompletedTask;
     }
 
 
     [RelayCommand]
-    private async Task SaveReadings()
+    private Task SaveReadings()
     {
+        return Task.CompletedTask;
     }
 
 
     [RelayCommand(CanExecute = nameof(CanDelete))]
-    private async Task DeleteSelectedReadings()
+    private Task DeleteSelectedReadings()
     {
+        return Task.CompletedTask;
     }
 
     private bool CanDelete()

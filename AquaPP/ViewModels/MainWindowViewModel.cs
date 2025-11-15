@@ -32,10 +32,12 @@ public partial class MainWindowViewModel : ViewModelBase
     /// <summary>
     /// Design time only constructor
     /// </summary>
+#pragma warning disable CS8618 // Non-nullable field must contain a non-null value when exiting constructor
     public MainWindowViewModel()
     {
         
     }
+#pragma warning restore CS8618
     public MainWindowViewModel(IEnumerable<PageBase> pages,
         PageNavigationService pageNavigationService,
         ISukiToastManager toastManager,

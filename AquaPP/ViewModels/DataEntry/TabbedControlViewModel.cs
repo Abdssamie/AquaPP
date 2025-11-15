@@ -6,7 +6,5 @@ namespace AquaPP.ViewModels.DataEntry;
 
 public class TabbedControlViewModel : ViewModelBase
 {
-    private ObservableCollection<DataGridView> _tabs;
-    
-    
+    // Removed unused field
 }

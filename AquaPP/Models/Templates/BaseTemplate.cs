@@ -9,7 +9,7 @@ public partial class BaseTemplate : ObservableValidator
     [ObservableProperty]
     [Required(ErrorMessage = "Location is required")]
     [StringLength(100, ErrorMessage = "Location must be less than 100 characters")]
-    private string _location;
+    private string _location = string.Empty;
 
     [ObservableProperty] private string _sampleId = GenerateSampleId();
 
