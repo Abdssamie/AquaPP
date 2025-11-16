@@ -10,38 +10,9 @@
              x:DataType="pages:DataEntryViewModel">
 
     <UserControl.Styles>
-        <Style Selector="DataGridColumnHeader">
-            <Setter Property="Background" Value="{DynamicResource SukiCardBackground}" />
-            <Setter Property="Foreground" Value="{DynamicResource SukiText}" />
-            <Setter Property="FontWeight" Value="SemiBold" />
-            <Setter Property="FontSize" Value="13" />
-            <Setter Property="Padding" Value="12,8" />
-        </Style>
-        
-        <Style Selector="DataGridColumnHeader StackPanel TextBlock">
-            <Setter Property="FontWeight" Value="SemiBold" />
-            <Setter Property="FontSize" Value="13" />
-            <Setter Property="VerticalAlignment" Value="Center" />
-        </Style>
-        
-        <Style Selector="DataGridColumnHeader StackPanel i|Icon">
-            <Setter Property="FontSize" Value="16" />
-            <Setter Property="Width" Value="16" />
-            <Setter Property="Height" Value="16" />
-            <Setter Property="Foreground" Value="{DynamicResource SukiPrimaryColor}" />
-        </Style>
-        
+        <!-- Keep only view-specific styles, DataGrid styles are now global -->
         <Style Selector="DataGridRow">
             <Setter Property="Height" Value="48" />
-        </Style>
-        
-        <Style Selector="DataGridRow:pointerover /template/ Rectangle#BackgroundRectangle">
-            <Setter Property="Fill" Value="{DynamicResource SukiLightBorderBrush}" />
-        </Style>
-        
-        <Style Selector="DataGridCell">
-            <Setter Property="FontSize" Value="13" />
-            <Setter Property="Padding" Value="12,0" />
         </Style>
         
         <Style Selector="Button.ActionButton">
@@ -104,13 +75,11 @@
                     x:Name="ReadingsDataGrid"
                     ItemsSource="{Binding Readings}"
                     IsVisible="{Binding !ShowNoDataMessage}"
-                    CanUserResizeColumns="True"
                     AutoGenerateColumns="False"
                     IsReadOnly="False"
                     SelectionMode="Extended"
                     SelectionChanged="OnDataGridSelectionChanged"
                     HeadersVisibility="Column"
-                    GridLinesVisibility="Horizontal"
                     PointerPressed="DataGridPointerPressed"
                     HorizontalScrollBarVisibility="Auto"
                     VerticalScrollBarVisibility="Auto"

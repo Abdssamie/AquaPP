@@ -1,0 +1,381 @@
+<UserControl xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:pages="clr-namespace:AquaPP.ViewModels.Pages"
+             xmlns:i="https://github.com/projektanker/icons.avalonia"
+             xmlns:suki="https://github.com/kikipoulet/SukiUI"
+             xmlns:converters="clr-namespace:AquaPP.Converters"
+             mc:Ignorable="d" d:DesignWidth="1200" d:DesignHeight="800"
+             x:Class="AquaPP.Views.Pages.AlertConfigurationView"
+             x:DataType="pages:AlertConfigurationViewModel">
+    
+    <UserControl.Resources>
+        <converters:AlertSeverityColorConverter x:Key="SeverityColorConverter" />
+    </UserControl.Resources>
+    
+    <Design.DataContext>
+        <pages:AlertConfigurationViewModel />
+    </Design.DataContext>
+
+    <ScrollViewer>
+        <StackPanel Spacing="20" Margin="20" MaxWidth="1000">
+            <!-- Header -->
+            <suki:GlassCard>
+                <Grid ColumnDefinitions="*,Auto" Height="80">
+                    <StackPanel Grid.Column="0" 
+                                Spacing="8"
+                                VerticalAlignment="Center">
+                        <StackPanel Orientation="Horizontal" Spacing="12">
+                            <i:Icon Value="fa-solid fa-bell-concierge" 
+                                    FontSize="24"
+                                    Foreground="{DynamicResource SukiPrimaryColor}"
+                                    VerticalAlignment="Center" />
+                            <TextBlock Text="Alert Configuration" 
+                                       FontSize="24" 
+                                       FontWeight="Bold"
+                                       Foreground="{DynamicResource SukiText}"
+                                       VerticalAlignment="Center" />
+                        </StackPanel>
+                        <TextBlock Text="Configure how you receive alert notifications" 
+                                   FontSize="13"
+                                   Foreground="{DynamicResource SukiLowText}"
+                                   Margin="36,0,0,0" />
+                    </StackPanel>
+                    
+                    <!-- Unsaved Changes Indicator -->
+                    <Border Grid.Column="1"
+                            Background="#FF9800"
+                            CornerRadius="8"
+                            Padding="12,6"
+                            VerticalAlignment="Center"
+                            IsVisible="{Binding HasUnsavedChanges}">
+                        <StackPanel Orientation="Horizontal" Spacing="8">
+                            <i:Icon Value="fa-solid fa-circle-exclamation" 
+                                    FontSize="14"
+                                    Foreground="White" />
+                            <TextBlock Text="Unsaved Changes" 
+                                       Foreground="White"
+                                       FontWeight="SemiBold"
+                                       FontSize="12" />
+                        </StackPanel>
+                    </Border>
+                </Grid>
+            </suki:GlassCard>
+            
+            <!-- Notification Channels Section -->
+            <suki:GlassCard>
+                <StackPanel Spacing="16">
+                    <StackPanel Orientation="Horizontal" Spacing="12">
+                        <i:Icon Value="fa-solid fa-tower-broadcast" 
+                                FontSize="18"
+                                Foreground="{DynamicResource SukiPrimaryColor}"
+                                VerticalAlignment="Center" />
+                        <TextBlock Text="Notification Channels" 
+                                   FontSize="18" 
+                                   FontWeight="SemiBold"
+                                   VerticalAlignment="Center" />
+                    </StackPanel>
+                    
+                    <Separator />
+                    
+                    <!-- Desktop Toast Notifications -->
+                    <Grid ColumnDefinitions="*,Auto,200" ColumnSpacing="16">
+                        <StackPanel Grid.Column="0" Spacing="4">
+                            <StackPanel Orientation="Horizontal" Spacing="8">
+                                <i:Icon Value="fa-solid fa-desktop" 
+                                        FontSize="14"
+                                        Foreground="{DynamicResource SukiPrimaryColor}"
+                                        VerticalAlignment="Center" />
+                                <TextBlock Text="Desktop Toast Notifications" 
+                                           FontWeight="SemiBold"
+                                           FontSize="14"
+                                           VerticalAlignment="Center" />
+                            </StackPanel>
+                            <TextBlock Text="Show system notifications on your desktop" 
+                                       Opacity="0.7"
+                                       FontSize="12"
+                                       Margin="22,0,0,0" />
+                        </StackPanel>
+                        
+                        <ToggleSwitch Grid.Column="1" 
+                                      IsChecked="{Binding DesktopToastEnabled}"
+                                      VerticalAlignment="Center" />
+                        
+                        <StackPanel Grid.Column="2" Spacing="4">
+                            <TextBlock Text="Minimum Severity" 
+                                       FontSize="11"
+                                       Foreground="{DynamicResource SukiLowText}" />
+                            <ComboBox ItemsSource="{Binding SeverityLevels}"
+                                      SelectedItem="{Binding DesktopToastSeverity}"
+                                      IsEnabled="{Binding DesktopToastEnabled}"
+                                      HorizontalAlignment="Stretch" />
+                        </StackPanel>
+                    </Grid>
+                    
+                    <Separator Opacity="0.3" />
+                    
+                    <!-- Sound Notifications -->
+                    <Grid ColumnDefinitions="*,Auto,200" ColumnSpacing="16">
+                        <StackPanel Grid.Column="0" Spacing="4">
+                            <StackPanel Orientation="Horizontal" Spacing="8">
+                                <i:Icon Value="fa-solid fa-volume-high" 
+                                        FontSize="14"
+                                        Foreground="{DynamicResource SukiPrimaryColor}"
+                                        VerticalAlignment="Center" />
+                                <TextBlock Text="Sound Notifications" 
+                                           FontWeight="SemiBold"
+                                           FontSize="14"
+                                           VerticalAlignment="Center" />
+                            </StackPanel>
+                            <TextBlock Text="Play audio alerts for critical events" 
+                                       Opacity="0.7"
+                                       FontSize="12"
+                                       Margin="22,0,0,0" />
+                        </StackPanel>
+                        
+                        <ToggleSwitch Grid.Column="1" 
+                                      IsChecked="{Binding SoundEnabled}"
+                                      VerticalAlignment="Center" />
+                        
+                        <StackPanel Grid.Column="2" Spacing="4">
+                            <TextBlock Text="Minimum Severity" 
+                                       FontSize="11"
+                                       Foreground="{DynamicResource SukiLowText}" />
+                            <ComboBox ItemsSource="{Binding SeverityLevels}"
+                                      SelectedItem="{Binding SoundSeverity}"
+                                      IsEnabled="{Binding SoundEnabled}"
+                                      HorizontalAlignment="Stretch" />
+                        </StackPanel>
+                    </Grid>
+                    
+                    <Separator Opacity="0.3" />
+                    
+                    <!-- In-App Notifications -->
+                    <Grid ColumnDefinitions="*,Auto,200" ColumnSpacing="16">
+                        <StackPanel Grid.Column="0" Spacing="4">
+                            <StackPanel Orientation="Horizontal" Spacing="8">
+                                <i:Icon Value="fa-solid fa-message" 
+                                        FontSize="14"
+                                        Foreground="{DynamicResource SukiPrimaryColor}"
+                                        VerticalAlignment="Center" />
+                                <TextBlock Text="In-App Notifications" 
+                                           FontWeight="SemiBold"
+                                           FontSize="14"
+                                           VerticalAlignment="Center" />
+                            </StackPanel>
+                            <TextBlock Text="Display notifications within the application" 
+                                       Opacity="0.7"
+                                       FontSize="12"
+                                       Margin="22,0,0,0" />
+                        </StackPanel>
+                        
+                        <ToggleSwitch Grid.Column="1" 
+                                      IsChecked="{Binding InAppEnabled}"
+                                      VerticalAlignment="Center" />
+                        
+                        <StackPanel Grid.Column="2" Spacing="4">
+                            <TextBlock Text="Minimum Severity" 
+                                       FontSize="11"
+                                       Foreground="{DynamicResource SukiLowText}" />
+                            <ComboBox ItemsSource="{Binding SeverityLevels}"
+                                      SelectedItem="{Binding InAppSeverity}"
+                                      IsEnabled="{Binding InAppEnabled}"
+                                      HorizontalAlignment="Stretch" />
+                        </StackPanel>
+                    </Grid>
+                </StackPanel>
+            </suki:GlassCard>
+            
+            <!-- Sound Selection Section -->
+            <suki:GlassCard>
+                <StackPanel Spacing="16">
+                    <StackPanel Orientation="Horizontal" Spacing="12">
+                        <i:Icon Value="fa-solid fa-music" 
+                                FontSize="18"
+                                Foreground="{DynamicResource SukiPrimaryColor}"
+                                VerticalAlignment="Center" />
+                        <TextBlock Text="Sound Settings" 
+                                   FontSize="18" 
+                                   FontWeight="SemiBold"
+                                   VerticalAlignment="Center" />
+                    </StackPanel>
+                    
+                    <Separator />
+                    
+                    <Grid ColumnDefinitions="*,300" ColumnSpacing="20">
+                        <StackPanel Grid.Column="0" Spacing="4">
+                            <TextBlock Text="Alert Sound" 
+                                       FontWeight="SemiBold"
+                                       FontSize="14" />
+                            <TextBlock Text="Choose the sound to play when alerts are triggered" 
+                                       Opacity="0.7"
+                                       FontSize="12" />
+                        </StackPanel>
+                        
+                        <ComboBox Grid.Column="1"
+                                  ItemsSource="{Binding AvailableSounds}"
+                                  SelectedItem="{Binding SelectedSound}"
+                                  IsEnabled="{Binding SoundEnabled}"
+                                  HorizontalAlignment="Stretch"
+                                  VerticalAlignment="Center" />
+                    </Grid>
+                </StackPanel>
+            </suki:GlassCard>
+            
+            <!-- Test Notification Section -->
+            <suki:GlassCard>
+                <StackPanel Spacing="16">
+                    <StackPanel Orientation="Horizontal" Spacing="12">
+                        <i:Icon Value="fa-solid fa-flask" 
+                                FontSize="18"
+                                Foreground="{DynamicResource SukiPrimaryColor}"
+                                VerticalAlignment="Center" />
+                        <TextBlock Text="Test Notifications" 
+                                   FontSize="18" 
+                                   FontWeight="SemiBold"
+                                   VerticalAlignment="Center" />
+                    </StackPanel>
+                    
+                    <Separator />
+                    
+                    <Grid ColumnDefinitions="*,Auto">
+                        <StackPanel Grid.Column="0" Spacing="4">
+                            <TextBlock Text="Send Test Alert" 
+                                       FontWeight="SemiBold"
+                                       FontSize="14" />
+                            <TextBlock Text="Verify your notification settings are working correctly" 
+                                       Opacity="0.7"
+                                       FontSize="12" />
+                        </StackPanel>
+                        
+                        <Button Grid.Column="1"
+                                Command="{Binding TestNotificationCommand}"
+                                Classes="Accent"
+                                VerticalAlignment="Center"
+                                Padding="20,10">
+                            <StackPanel Orientation="Horizontal" Spacing="10">
+                                <i:Icon Value="fa-solid fa-paper-plane" FontSize="14" />
+                                <TextBlock Text="Send Test Notification" FontSize="13" />
+                            </StackPanel>
+                        </Button>
+                    </Grid>
+                </StackPanel>
+            </suki:GlassCard>
+            
+            <!-- Notification History Preview Section -->
+            <suki:GlassCard>
+                <StackPanel Spacing="16">
+                    <StackPanel Orientation="Horizontal" Spacing="12">
+                        <i:Icon Value="fa-solid fa-clock-rotate-left" 
+                                FontSize="18"
+                                Foreground="{DynamicResource SukiPrimaryColor}"
+                                VerticalAlignment="Center" />
+                        <TextBlock Text="Recent Notifications" 
+                                   FontSize="18" 
+                                   FontWeight="SemiBold"
+                                   VerticalAlignment="Center" />
+                        <TextBlock Text="{Binding NotificationHistory.Count, StringFormat='({0})'}" 
+                                   FontSize="14"
+                                   Foreground="{DynamicResource SukiLowText}"
+                                   VerticalAlignment="Center" />
+                    </StackPanel>
+                    
+                    <Separator />
+                    
+                    <DataGrid ItemsSource="{Binding NotificationHistory}"
+                              AutoGenerateColumns="False"
+                              IsReadOnly="True"
+                              GridLinesVisibility="Horizontal"
+                              CanUserReorderColumns="False"
+                              CanUserResizeColumns="True"
+                              CanUserSortColumns="True"
+                              MaxHeight="300"
+                              SelectionMode="Single">
+                        
+                        <DataGrid.Columns>
+                            <!-- Timestamp Column -->
+                            <DataGridTextColumn Header="Timestamp" 
+                                                Binding="{Binding Timestamp, StringFormat='{}{0:yyyy-MM-dd HH:mm:ss}'}"
+                                                Width="160" />
+                            
+                            <!-- Channel Column -->
+                            <DataGridTextColumn Header="Channel" 
+                                                Binding="{Binding Channel}"
+                                                Width="140" />
+                            
+                            <!-- Severity Column -->
+                            <DataGridTemplateColumn Header="Severity" Width="120">
+                                <DataGridTemplateColumn.CellTemplate>
+                                    <DataTemplate>
+                                        <Border CornerRadius="6" 
+                                                Padding="8,4"
+                                                HorizontalAlignment="Center"
+                                                Background="#2196F3">
+                                            <TextBlock Text="{Binding Severity}" 
+                                                       Foreground="White"
+                                                       FontWeight="SemiBold"
+                                                       FontSize="11"
+                                                       HorizontalAlignment="Center" />
+                                        </Border>
+                                    </DataTemplate>
+                                </DataGridTemplateColumn.CellTemplate>
+                            </DataGridTemplateColumn>
+                            
+                            <!-- Message Column -->
+                            <DataGridTextColumn Header="Message" 
+                                                Binding="{Binding Message}"
+                                                Width="*" />
+                            
+                            <!-- Status Column -->
+                            <DataGridTemplateColumn Header="Status" Width="100">
+                                <DataGridTemplateColumn.CellTemplate>
+                                    <DataTemplate>
+                                        <StackPanel Orientation="Horizontal" Spacing="6" HorizontalAlignment="Center">
+                                            <Ellipse Width="8" 
+                                                     Height="8" 
+                                                     VerticalAlignment="Center"
+                                                     Fill="{Binding Delivered, Converter={x:Static converters:BoolToStatusColorConverter.Instance}}" />
+                                            <TextBlock Text="{Binding Delivered, Converter={x:Static converters:BoolToStatusTextConverter.Instance}}" 
+                                                       FontSize="12"
+                                                       VerticalAlignment="Center" />
+                                        </StackPanel>
+                                    </DataTemplate>
+                                </DataGridTemplateColumn.CellTemplate>
+                            </DataGridTemplateColumn>
+                        </DataGrid.Columns>
+                    </DataGrid>
+                </StackPanel>
+            </suki:GlassCard>
+            
+            <!-- Action Buttons Section -->
+            <suki:GlassCard>
+                <Grid ColumnDefinitions="Auto,*,Auto,Auto" ColumnSpacing="12">
+                    <Button Grid.Column="0"
+                            Command="{Binding ResetToDefaultCommand}"
+                            ToolTip.Tip="Reset all settings to default values">
+                        <StackPanel Orientation="Horizontal" Spacing="8">
+                            <i:Icon Value="fa-solid fa-rotate-left" FontSize="14" />
+                            <TextBlock Text="Reset to Default" />
+                        </StackPanel>
+                    </Button>
+                    
+                    <!-- Spacer -->
+                    <Panel Grid.Column="1" />
+                    
+                    <Button Grid.Column="2"
+                            Command="{Binding SaveCommand}"
+                            Classes="Accent"
+                            IsEnabled="{Binding HasUnsavedChanges}"
+                            Padding="24,10">
+                        <StackPanel Orientation="Horizontal" Spacing="8">
+                            <i:Icon Value="fa-solid fa-floppy-disk" FontSize="14" />
+                            <TextBlock Text="Save Changes" FontWeight="SemiBold" />
+                        </StackPanel>
+                    </Button>
+                </Grid>
+            </suki:GlassCard>
+        </StackPanel>
+    </ScrollViewer>
+    
+</UserControl>

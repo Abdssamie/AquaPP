@@ -25,10 +25,12 @@
         </PackageReference>
         <PackageReference Include="CommunityToolkit.Mvvm" Version="8.4.0" />
         <PackageReference Include="CsvHelper" Version="33.1.0" />
+        <PackageReference Include="Google.Protobuf" Version="3.33.1" />
         <PackageReference Include="LiteDB" Version="5.0.21" />
         <PackageReference Include="LoadingIndicators.Avalonia" Version="11.0.11.1" />
         <PackageReference Include="Material.Icons.Avalonia" Version="2.4.1" />
         <PackageReference Include="MathNet.Numerics" Version="5.0.0" />
+        <PackageReference Include="Microsoft.AspNetCore.SignalR.Client" Version="9.0.11" />
         <PackageReference Include="Microsoft.EntityFrameworkCore" Version="9.0.11" />
         <PackageReference Include="Microsoft.EntityFrameworkCore.Design" Version="9.0.11">
           <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
@@ -55,6 +57,7 @@
         <PackageReference Include="SukiUI" Version="6.0.3" />
         <PackageReference Include="SukiUI.Dock" Version="6.0.3" />
         <PackageReference Include="Svg.Controls.Skia.Avalonia" Version="11.3.6.2" />
+        <PackageReference Include="System.Reactive" Version="6.1.0" />
         <PackageReference Include="UnitsNet" Version="5.75.0" />
         <PackageReference Include="Xaml.Behaviors.Avalonia" Version="11.3.8.2" />
     </ItemGroup>
@@ -84,6 +87,16 @@
         <DependentUpon>NewEntryWindowViewModel.axaml</DependentUpon>
         <SubType>Code</SubType>
       </Compile>
+      <Compile Update="Controls\DialogView.axaml.cs">
+        <DependentUpon>DialogView.axaml</DependentUpon>
+        <SubType>Code</SubType>
+      </Compile>
+      <Compile Update="Views\Pages\AssetDirectoryView.axaml.cs">
+        <DependentUpon>AssetDirectoryView.axaml</DependentUpon>
+      </Compile>
+      <Compile Update="Views\Pages\AlertManagementView.axaml.cs">
+        <DependentUpon>AlertManagementView.axaml</DependentUpon>
+      </Compile>
     </ItemGroup>
 
     <ItemGroup>
@@ -91,11 +104,15 @@
     </ItemGroup>
 
     <ItemGroup>
-      <Folder Include="Core\Features\" />
+      <AdditionalFiles Include="Core\Units\Units.fr-FR.resx" />
+      <AdditionalFiles Include="Core\Units\Units.resx" />
     </ItemGroup>
 
     <ItemGroup>
-      <AdditionalFiles Include="Core\Units\Units.fr-FR.resx" />
-      <AdditionalFiles Include="Core\Units\Units.resx" />
+      <Folder Include="Migrations\" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <ProjectReference Include="..\AquaPP.Contracts\AquaPP.Contracts.csproj" />
     </ItemGroup>
 </Project>

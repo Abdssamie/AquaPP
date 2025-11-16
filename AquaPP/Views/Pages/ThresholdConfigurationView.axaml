@@ -1,0 +1,330 @@
+<UserControl xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:pages="clr-namespace:AquaPP.ViewModels.Pages"
+             xmlns:i="https://github.com/projektanker/icons.avalonia"
+             xmlns:suki="https://github.com/kikipoulet/SukiUI"
+             xmlns:converters="clr-namespace:AquaPP.Converters"
+             mc:Ignorable="d" d:DesignWidth="1200" d:DesignHeight="800"
+             x:Class="AquaPP.Views.Pages.ThresholdConfigurationView"
+             x:DataType="pages:ThresholdConfigurationViewModel">
+    
+    <Design.DataContext>
+        <pages:ThresholdConfigurationViewModel />
+    </Design.DataContext>
+
+    <Grid RowDefinitions="Auto,Auto,*,Auto" Margin="20" RowSpacing="20">
+        <!-- Header with Search -->
+        <suki:GlassCard Grid.Row="0">
+            <Grid ColumnDefinitions="Auto,*,Auto,Auto" Height="60" ColumnSpacing="12">
+                <StackPanel Grid.Column="0" 
+                            Orientation="Horizontal" 
+                            Spacing="12"
+                            VerticalAlignment="Center">
+                    <i:Icon Value="fa-solid fa-sliders" 
+                            FontSize="24"
+                            Foreground="{DynamicResource SukiPrimaryColor}"
+                            VerticalAlignment="Center" />
+                    <TextBlock Text="Threshold Configuration" 
+                               FontSize="24" 
+                               FontWeight="Bold"
+                               Foreground="{DynamicResource SukiText}"
+                               VerticalAlignment="Center" />
+                </StackPanel>
+                
+                <TextBox Grid.Column="1"
+                         Text="{Binding SearchText}"
+                         Watermark="Search sensors by name, asset, or type..."
+                         VerticalAlignment="Center"
+                         MinWidth="300">
+                    <TextBox.InnerLeftContent>
+                        <i:Icon Value="fa-solid fa-magnifying-glass" 
+                                FontSize="14"
+                                Margin="8,0,0,0" />
+                    </TextBox.InnerLeftContent>
+                </TextBox>
+                
+                <Button Grid.Column="2"
+                        Command="{Binding ShowBulkUpdateCommand}"
+                        VerticalAlignment="Center">
+                    <StackPanel Orientation="Horizontal" Spacing="8">
+                        <i:Icon Value="fa-solid fa-layer-group" FontSize="14" />
+                        <TextBlock Text="Bulk Update" />
+                    </StackPanel>
+                </Button>
+                
+                <Button Grid.Column="3"
+                        Command="{Binding LoadDataCommand}"
+                        Classes="Flat"
+                        VerticalAlignment="Center">
+                    <StackPanel Orientation="Horizontal" Spacing="8">
+                        <i:Icon Value="fa-solid fa-arrows-rotate" FontSize="14" />
+                        <TextBlock Text="Refresh" />
+                    </StackPanel>
+                </Button>
+            </Grid>
+        </suki:GlassCard>
+
+        <!-- Error Message -->
+        <Border Grid.Row="1"
+                Background="#FFEBEE" 
+                BorderBrush="#F44336" 
+                BorderThickness="1" 
+                CornerRadius="8" 
+                Padding="12"
+                IsVisible="{Binding ErrorMessage, Converter={x:Static StringConverters.IsNotNullOrEmpty}}">
+            <StackPanel Orientation="Horizontal" Spacing="10">
+                <i:Icon Value="fa-solid fa-circle-exclamation" 
+                        Foreground="#F44336"
+                        FontSize="16"
+                        VerticalAlignment="Center" />
+                <TextBlock Text="{Binding ErrorMessage}" 
+                           Foreground="#C62828"
+                           VerticalAlignment="Center" />
+            </StackPanel>
+        </Border>
+
+        <!-- Threshold Configuration DataGrid -->
+        <suki:GlassCard Grid.Row="2">
+            <Grid RowDefinitions="Auto,*">
+                <StackPanel Grid.Row="0" 
+                            Orientation="Horizontal" 
+                            Spacing="12"
+                            Margin="0,0,0,16">
+                    <i:Icon Value="fa-solid fa-table" 
+                            FontSize="16"
+                            Foreground="{DynamicResource SukiPrimaryColor}"
+                            VerticalAlignment="Center" />
+                    <TextBlock Text="Sensor Thresholds" 
+                               FontSize="16" 
+                               FontWeight="SemiBold"
+                               VerticalAlignment="Center" />
+                    <TextBlock Text="{Binding FilteredSensors.Count, StringFormat='({0} sensors)'}" 
+                               FontSize="14"
+                               Foreground="{DynamicResource SukiLowText}"
+                               VerticalAlignment="Center" />
+                </StackPanel>
+                
+                <DataGrid Grid.Row="1"
+                          ItemsSource="{Binding FilteredSensors}"
+                          AutoGenerateColumns="False"
+                          IsReadOnly="False"
+                          SelectionMode="Single">
+                    
+                    <DataGrid.Columns>
+                        <!-- Sensor Name Column -->
+                        <DataGridTextColumn Header="Sensor Name" 
+                                            Binding="{Binding SensorName}"
+                                            Width="*"
+                                            IsReadOnly="True" />
+                        
+                        <!-- Asset Column -->
+                        <DataGridTextColumn Header="Asset" 
+                                            Binding="{Binding AssetName}"
+                                            Width="*"
+                                            IsReadOnly="True" />
+                        
+                        <!-- Type Column -->
+                        <DataGridTextColumn Header="Type" 
+                                            Binding="{Binding Type}"
+                                            Width="120"
+                                            IsReadOnly="True" />
+                        
+                        <!-- Unit Column -->
+                        <DataGridTextColumn Header="Unit" 
+                                            Binding="{Binding Unit}"
+                                            Width="80"
+                                            IsReadOnly="True" />
+                        
+                        <!-- Current Min Threshold Column -->
+                        <DataGridTextColumn Header="Current Min" 
+                                            Binding="{Binding CurrentMinThreshold, StringFormat='{}{0:F2}'}"
+                                            Width="110"
+                                            IsReadOnly="True" />
+                        
+                        <!-- Current Max Threshold Column -->
+                        <DataGridTextColumn Header="Current Max" 
+                                            Binding="{Binding CurrentMaxThreshold, StringFormat='{}{0:F2}'}"
+                                            Width="110"
+                                            IsReadOnly="True" />
+                        
+                        <!-- New Min Threshold Column (Editable) -->
+                        <DataGridTemplateColumn Header="New Min" Width="130">
+                            <DataGridTemplateColumn.CellTemplate>
+                                <DataTemplate>
+                                    <Border BorderThickness="2"
+                                            CornerRadius="4"
+                                            Padding="4">
+                                        <Border.BorderBrush>
+                                            <SolidColorBrush Color="{Binding IsValid, Converter={x:Static converters:BoolToColorConverter.Instance}}" />
+                                        </Border.BorderBrush>
+                                        <NumericUpDown Value="{Binding NewMinThreshold, Mode=TwoWay}"
+                                                       FormatString="F2"
+                                                       Increment="0.1"
+                                                       ShowButtonSpinner="True"
+                                                       AllowSpin="True"
+                                                       Watermark="Min"
+                                                       HorizontalAlignment="Stretch" />
+                                    </Border>
+                                </DataTemplate>
+                            </DataGridTemplateColumn.CellTemplate>
+                        </DataGridTemplateColumn>
+                        
+                        <!-- New Max Threshold Column (Editable) -->
+                        <DataGridTemplateColumn Header="New Max" Width="130">
+                            <DataGridTemplateColumn.CellTemplate>
+                                <DataTemplate>
+                                    <Border BorderThickness="2"
+                                            CornerRadius="4"
+                                            Padding="4">
+                                        <Border.BorderBrush>
+                                            <SolidColorBrush Color="{Binding IsValid, Converter={x:Static converters:BoolToColorConverter.Instance}}" />
+                                        </Border.BorderBrush>
+                                        <NumericUpDown Value="{Binding NewMaxThreshold, Mode=TwoWay}"
+                                                       FormatString="F2"
+                                                       Increment="0.1"
+                                                       ShowButtonSpinner="True"
+                                                       AllowSpin="True"
+                                                       Watermark="Max"
+                                                       HorizontalAlignment="Stretch" />
+                                    </Border>
+                                </DataTemplate>
+                            </DataGridTemplateColumn.CellTemplate>
+                        </DataGridTemplateColumn>
+                        
+                        <!-- Status Column -->
+                        <DataGridTemplateColumn Header="Status" Width="100">
+                            <DataGridTemplateColumn.CellTemplate>
+                                <DataTemplate>
+                                    <StackPanel Orientation="Horizontal" Spacing="6" HorizontalAlignment="Center">
+                                        <i:Icon Value="{Binding HasChanges, Converter={x:Static converters:BoolToIconConverter.Instance}}"
+                                                FontSize="12"
+                                                Foreground="{Binding HasChanges, Converter={x:Static converters:BoolToStatusColorConverter.Instance}}"
+                                                VerticalAlignment="Center" />
+                                        <TextBlock Text="{Binding HasChanges, Converter={x:Static converters:BoolToStatusTextConverter.Instance}}" 
+                                                   FontSize="11"
+                                                   VerticalAlignment="Center" />
+                                    </StackPanel>
+                                </DataTemplate>
+                            </DataGridTemplateColumn.CellTemplate>
+                        </DataGridTemplateColumn>
+                        
+                        <!-- Actions Column -->
+                        <DataGridTemplateColumn Header="Actions" Width="150">
+                            <DataGridTemplateColumn.CellTemplate>
+                                <DataTemplate>
+                                    <StackPanel Orientation="Horizontal" Spacing="6" HorizontalAlignment="Center">
+                                        <Button Classes="Flat"
+                                                Command="{Binding $parent[DataGrid].((pages:ThresholdConfigurationViewModel)DataContext).PreviewImpactCommand}"
+                                                CommandParameter="{Binding}"
+                                                IsEnabled="{Binding HasChanges}"
+                                                ToolTip.Tip="Preview impact on historical data">
+                                            <i:Icon Value="fa-solid fa-eye" FontSize="12" />
+                                        </Button>
+                                        <Button Classes="Flat"
+                                                Command="{Binding $parent[DataGrid].((pages:ThresholdConfigurationViewModel)DataContext).ResetCommand}"
+                                                CommandParameter="{Binding}"
+                                                IsEnabled="{Binding HasChanges}"
+                                                ToolTip.Tip="Reset to current values">
+                                            <i:Icon Value="fa-solid fa-rotate-left" FontSize="12" />
+                                        </Button>
+                                    </StackPanel>
+                                </DataTemplate>
+                            </DataGridTemplateColumn.CellTemplate>
+                        </DataGridTemplateColumn>
+                    </DataGrid.Columns>
+                </DataGrid>
+            </Grid>
+        </suki:GlassCard>
+
+        <!-- Validation Messages and Action Buttons -->
+        <Grid Grid.Row="3" ColumnDefinitions="*,*,Auto" ColumnSpacing="20">
+            <!-- Validation Messages Panel -->
+            <suki:GlassCard Grid.Column="0"
+                            IsVisible="{Binding HasUnsavedChanges}">
+                <StackPanel Spacing="12">
+                    <StackPanel Orientation="Horizontal" Spacing="12">
+                        <i:Icon Value="fa-solid fa-circle-info" 
+                                FontSize="16"
+                                Foreground="{DynamicResource SukiPrimaryColor}"
+                                VerticalAlignment="Center" />
+                        <TextBlock Text="Unsaved Changes" 
+                                   FontSize="16" 
+                                   FontWeight="SemiBold"
+                                   VerticalAlignment="Center" />
+                    </StackPanel>
+                    
+                    <TextBlock Text="You have unsaved threshold changes. Review the changes and click Save to apply them."
+                               TextWrapping="Wrap"
+                               Foreground="{DynamicResource SukiLowText}" />
+                </StackPanel>
+            </suki:GlassCard>
+            
+            <!-- Preview Panel -->
+            <suki:GlassCard Grid.Column="1"
+                            IsVisible="{Binding SelectedSensor, Converter={x:Static ObjectConverters.IsNotNull}}">
+                <StackPanel Spacing="12">
+                    <StackPanel Orientation="Horizontal" Spacing="12">
+                        <i:Icon Value="fa-solid fa-chart-line" 
+                                FontSize="16"
+                                Foreground="{DynamicResource SukiPrimaryColor}"
+                                VerticalAlignment="Center" />
+                        <TextBlock Text="Impact Preview" 
+                                   FontSize="16" 
+                                   FontWeight="SemiBold"
+                                   VerticalAlignment="Center" />
+                    </StackPanel>
+                    
+                    <Separator />
+                    
+                    <Grid ColumnDefinitions="*,Auto" RowDefinitions="Auto,Auto" RowSpacing="8">
+                        <TextBlock Grid.Row="0" Grid.Column="0"
+                                   Text="Historical Readings Analyzed:"
+                                   FontSize="12"
+                                   Foreground="{DynamicResource SukiLowText}" />
+                        <TextBlock Grid.Row="0" Grid.Column="1"
+                                   Text="{Binding PreviewAffectedReadings}"
+                                   FontSize="12"
+                                   FontWeight="SemiBold" />
+                        
+                        <TextBlock Grid.Row="1" Grid.Column="0"
+                                   Text="Potential New Alerts:"
+                                   FontSize="12"
+                                   Foreground="{DynamicResource SukiLowText}" />
+                        <TextBlock Grid.Row="1" Grid.Column="1"
+                                   Text="{Binding PreviewNewAlerts}"
+                                   FontSize="12"
+                                   FontWeight="SemiBold"
+                                   Foreground="#FF9800" />
+                    </Grid>
+                </StackPanel>
+            </suki:GlassCard>
+            
+            <!-- Action Buttons -->
+            <suki:GlassCard Grid.Column="2" VerticalAlignment="Stretch">
+                <StackPanel Spacing="12" VerticalAlignment="Center" MinWidth="150">
+                    <Button Command="{Binding SaveCommand}"
+                            IsEnabled="{Binding HasUnsavedChanges}"
+                            HorizontalAlignment="Stretch"
+                            Classes="Accent">
+                        <StackPanel Orientation="Horizontal" Spacing="8">
+                            <i:Icon Value="fa-solid fa-floppy-disk" FontSize="14" />
+                            <TextBlock Text="Save Changes" />
+                        </StackPanel>
+                    </Button>
+                    
+                    <Button Command="{Binding CancelCommand}"
+                            IsEnabled="{Binding HasUnsavedChanges}"
+                            HorizontalAlignment="Stretch">
+                        <StackPanel Orientation="Horizontal" Spacing="8">
+                            <i:Icon Value="fa-solid fa-xmark" FontSize="14" />
+                            <TextBlock Text="Cancel" />
+                        </StackPanel>
+                    </Button>
+                </StackPanel>
+            </suki:GlassCard>
+        </Grid>
+    </Grid>
+    
+</UserControl>

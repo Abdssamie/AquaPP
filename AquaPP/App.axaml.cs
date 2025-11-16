@@ -6,12 +6,15 @@ using Avalonia.Controls.ApplicationLifetimes;
 using Avalonia.Data.Core.Plugins;
 using System.Linq;
 using AquaPP.Core.Common;
-using AquaPP.Core.Features.Dashboard;
 using AquaPP.Data;
 using AquaPP.Services;
 using AquaPP.Services.Csv;
 using AquaPP.Services.File;
 using AquaPP.Services.Units;
+using AquaPP.Core.Interfaces;
+using AquaPP.Infrastructure.Data;
+using AquaPP.Infrastructure.Data.Repositories;
+using AquaPP.Infrastructure.Streaming;
 using Microsoft.Extensions.DependencyInjection;
 using Avalonia.Markup.Xaml;
 using AquaPP.ViewModels;
@@ -84,6 +87,11 @@ public partial class App : Application
             
             dbContext.Database.Migrate();
             Log.Information("Database migration completed successfully.");
+            
+            // Seed IoT test data
+            var seeder = scope.ServiceProvider.GetRequiredService<DbSeeder>();
+            seeder.SeedAsync().Wait();
+            Log.Information("Database seeding completed successfully.");
         }
         catch (Exception ex)
         {
@@ -103,12 +111,18 @@ public partial class App : Application
             .AddView<MainWindowView, MainWindowViewModel>(services)
 
             // Add pages
-            .AddView<Views.Pages.DashboardView, DashboardViewModel>(services)
             .AddView<DialogView, DialogViewModel>(services)
-            .AddView<Views.Pages.ChatView, ChatViewModel>(services)
+            .AddView<ChatView, ChatViewModel>(services)
             .AddView<SimpleAppView, SimpleAppViewModel>(services)
-            .AddView<Views.Pages.SettingsView, SettingsViewModel>(services)
-            .AddView<Views.Pages.DataEntryView, DataEntryViewModel>(services);
+            .AddView<SettingsView, SettingsViewModel>(services)
+            .AddView<DataEntryView, DataEntryViewModel>(services)
+            .AddView<AssetDirectoryView, AssetDirectoryViewModel>(services)
+            .AddView<MonitoringDashboardView, MonitoringDashboardViewModel>(services)
+            .AddView<SensorListView, SensorListViewModel>(services)
+            .AddView<SensorDetailView, SensorDetailViewModel>(services)
+            .AddView<AlertManagementView, AlertManagementViewModel>(services)
+            .AddView<ThresholdConfigurationView, ThresholdConfigurationViewModel>(services)
+            .AddView<AlertConfigurationView, AlertConfigurationViewModel>(services);
     }
     
     private static ServiceProvider ConfigureServices(ServiceCollection collection)
@@ -148,6 +162,12 @@ public partial class App : Application
         collection.AddSingleton<WaterQualityCsvService>(); // Register WaterQualityCsvService
         collection.AddSingleton<IFilePickerService, FilePickerService>(); // Register IFilePickerService
         collection.AddSingleton<IUnitConversionService, UnitConversionService>(); // Register IFilePickerService
+        
+        // IoT Services
+        collection.AddScoped<IAssetRepository, AssetRepository>();
+        collection.AddScoped<ISensorRepository, SensorRepository>();
+        collection.AddSingleton<IDataStreamService, MockDataStreamService>();
+        collection.AddTransient<DbSeeder>();
         
         collection.AddSingleton<PageNavigationService>();
         collection.AddSingleton<ISukiToastManager, SukiToastManager>();
