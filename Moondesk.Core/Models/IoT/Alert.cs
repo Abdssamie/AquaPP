@@ -1,7 +1,7 @@
 using System;
 using System.ComponentModel.DataAnnotations;
 
-namespace AquaPP.Core.Models.IoT;
+namespace Moondesk.Core.Models.IoT;
 
 /// <summary>
 /// Represents an alert triggered when sensor readings exceed thresholds

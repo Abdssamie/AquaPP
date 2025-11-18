@@ -7,3 +7,7 @@ riderModule.iml
 AquaPP.sln.DotSettings.user
 AquaPP/launchSettings.json
 **/launchSettings.json
+appsettings.json
+appsettings.Development.json
+appsettings.Production.json
+appsettings.Test.json

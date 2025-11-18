@@ -1,6 +1,6 @@
 syntax = "proto3";
 
-package aquapp.data;
+package moondesk.data;
 
 // Used for API calls that don't require any input parameters.
 import "google/protobuf/timestamp.proto";

@@ -16,6 +16,6 @@
     </ItemGroup>
     
     <ItemGroup>
-        <ProjectReference Include="..\AquaPP.Contracts\AquaPP.Contracts.csproj"/>
+        <ProjectReference Include="..\Moondesk.Contracts\Moondesk.Contracts.csproj" />
     </ItemGroup>
 </Project>

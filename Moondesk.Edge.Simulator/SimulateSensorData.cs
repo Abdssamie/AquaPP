@@ -3,7 +3,7 @@ using Moondesk.Core.Models.IoT;
 using MQTTnet;
 using MQTTnet.Protocol;
 
-namespace AquaPP.Edge.Simulator;
+namespace Moondesk.Edge.Simulator;
 
 public abstract class SensorReadingSimulator
 {
@@ -24,7 +24,7 @@ public abstract class SensorReadingSimulator
                 Value = random.NextDouble(),
                 Timestamp = DateTimeOffset.UtcNow,
             };
-                
+
             var payload = JsonSerializer.Serialize(reading);
 
             var message = new MqttApplicationMessageBuilder()
@@ -37,12 +37,48 @@ public abstract class SensorReadingSimulator
             if (client.IsConnected)
             {
                 await client.PublishAsync(message, CancellationToken.None);
-                Console.WriteLine($@"[PUBLISHED] {message}");
+                Console.WriteLine($@"[READING PUBLISHED] {message}");
             }
             
-            await Task.Delay(TimeSpan.FromSeconds(5));
+            // Generate a random delay in seconds
+            var delay = random.NextDouble() * 9 + 1;
+            await Task.Delay(TimeSpan.FromSeconds(delay));
         }
         // ReSharper disable once FunctionNeverReturns
+    }
+
+    public static async Task SimulateAlert(IMqttClient client)
+    {
+        var random = new Random();
+
+        while (true)
+        {
+            var alert = new Alert
+            {
+                Acknowledged = false,
+                Sensor = _sensor,
+                SensorId = _sensor.Id,
+                Message = "Unknown issue detected",
+                Severity = AlertSeverity.Emergency
+            };
+
+            var payload = JsonSerializer.Serialize(alert);
+            var message = new MqttApplicationMessageBuilder()
+                .WithTopic("sensor-alert")
+                .WithPayload(payload)
+                .WithQualityOfServiceLevel(MqttQualityOfServiceLevel.AtLeastOnce)
+                .WithRetainFlag(false)
+                .Build();
+
+            if (client.IsConnected)
+            {
+                await client.PublishAsync(message, CancellationToken.None);
+                Console.WriteLine($@"[ALERT PUBLISHED] {message}");
+                
+                var delay = random.NextDouble() * 30 + 30;
+                await Task.Delay(TimeSpan.FromSeconds(delay));
+            }
+        }
     }
 
     private static ReadingQuality GetReadingQuality()

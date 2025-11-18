@@ -1,6 +1,6 @@
-using AquaPP.Core.Models.IoT;
+using Moondesk.Core.Models.IoT;
 
-namespace AquaPP.Core.Interfaces;
+namespace Moondesk.Core.Interfaces;
 
 /// <summary>
 /// Service for streaming real-time sensor data

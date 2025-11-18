@@ -1,4 +1,4 @@
-namespace AquaPP.Core.Models.IoT;
+namespace Moondesk.Core.Models.IoT;
 
 /// <summary>
 /// Represents a single time-series reading from a sensor

@@ -2,7 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 
-namespace AquaPP.Core.Models.IoT;
+namespace Moondesk.Core.Models.IoT;
 
 /// <summary>
 /// Represents an industrial asset (machine, equipment, facility) being monitored
