@@ -387,7 +387,7 @@ var organizationId = User.FindFirst("org_id")?.Value;
 ```json
 {
   "ConnectionStrings": {
-    "DefaultConnection": "Host=localhost;Port=5432;Database=moondesk;Username=postgres;Password=yourpassword"
+    "DefaultConnection": "Host=localhost;Port=5433;Database=moondesk;Username=postgres;Password=yourpassword"
   },
   "Clerk": {
     "Authority": "https://clerk.yourapp.com"

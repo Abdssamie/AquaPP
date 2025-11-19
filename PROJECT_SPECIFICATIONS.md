@@ -19,6 +19,67 @@
 
 ---
 
+## 🏗️ Protocol-Agnostic Architecture
+
+### Overview
+Moondesk is designed as a **protocol-agnostic IoT platform** using the **Strategy Pattern** to support multiple industrial communication protocols. This architecture enables seamless integration with:
+
+**Cloud-Native Protocols** (Direct device-to-cloud):
+- **MQTT**: Lightweight pub/sub for IoT devices
+- **OPC UA**: Industrial automation standard with built-in security
+- **HTTP/REST**: Simple polling for basic devices
+
+**Edge-Only Protocols** (Via on-premises gateway):
+- **Modbus TCP/RTU**: Legacy industrial sensors and PLCs
+- **BACnet**: Building automation systems
+- **Custom protocols**: Extensible through adapter pattern
+
+### Two-Tier Architecture
+
+```
+┌─────────────────────────────────────────────────────────┐
+│  Customer Site (On-Premises)                            │
+│  ┌──────────────┐                                       │
+│  │ Modbus/BACnet│  Local Protocol                       │
+│  │   Devices    │  ───────────────┐                     │
+│  └──────────────┘                 │                     │
+│                                   ▼                     │
+│                        ┌─────────────────────┐          │
+│                        │  Edge Gateway       │          │
+│                        │  (Raspberry Pi)     │          │
+│                        │  • Protocol Reader  │          │
+│                        │  • Translator       │          │
+│                        │  • Cloud Publisher  │          │
+│                        └──────────┬──────────┘          │
+└───────────────────────────────────┼─────────────────────┘
+                                    │ MQTT/OPC UA (TLS)
+                                    │ Internet
+                                    ▼
+┌─────────────────────────────────────────────────────────┐
+│  Cloud (VPS)                                            │
+│  ┌─────────────────────────────┐                        │
+│  │  Moondesk.API               │                        │
+│  │  • Protocol Adapters        │                        │
+│  │    - MQTT Adapter           │                        │
+│  │    - OPC UA Adapter         │                        │
+│  │    - HTTP Adapter           │                        │
+│  │  • Unified Ingestion        │                        │
+│  │  • TimescaleDB Storage      │                        │
+│  │  • SignalR Broadcasting     │                        │
+│  └─────────────────────────────┘                        │
+└─────────────────────────────────────────────────────────┘
+```
+
+### Strategy Pattern Implementation
+
+All protocol implementations conform to the `IProtocolAdapter` interface, enabling:
+- **Runtime protocol selection** per device
+- **Zero-code protocol additions** (just implement interface)
+- **Protocol-agnostic business logic** (same code for all protocols)
+- **Independent testing** of each protocol
+
+---
+
 ## 📦 Project 1: Moondesk.Domain
 
 ### Description

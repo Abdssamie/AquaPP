@@ -17,10 +17,13 @@ public class ConnectionCredential
     public required string OrganizationId { get; set; }
 
     public string Username { get; set; } = string.Empty;
+    
+    public string? ClientId { get; set; } = string.Empty;
 
     [Required]
     public required string EncryptedPassword { get; set; }
 
+    // ReSharper disable once InconsistentNaming
     public required string EncryptionIV { get; set; }
 
     public Protocol Protocol { get; set; }

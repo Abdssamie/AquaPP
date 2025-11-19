@@ -1,6 +1,6 @@
-# AquaPP
+# Moondesk
 
-AquaPP is a .NET Avalonia UI application designed to provide a comprehensive solution for water quality management and treatment process optimization. It offers features for data entry, chat-based interactions, and dashboard visualizations to help users monitor and manage water-related data efficiently.
+Moondesk is a .NET Avalonia UI application designed to provide a comprehensive solution for water quality management and treatment process optimization. It offers features for data entry, chat-based interactions, and dashboard visualizations to help users monitor and manage water-related data efficiently.
 
 ![Diagram](AquaPP/Assets/diagram-export-11-16-2025-9_53_24-PM.png)
 
@@ -20,7 +20,7 @@ AquaPP is a .NET Avalonia UI application designed to provide a comprehensive sol
 
 ## Development Environment Setup
 
-To set up the development environment for AquaPP, follow these steps:
+To set up the development environment for Moondesk, follow these steps:
 
 1.  **Install .NET SDK:**
     Ensure you have the .NET 9.0 SDK installed on your machine. You can download it from the official .NET website: [https://dotnet.microsoft.com/download/dotnet/9.0](https://dotnet.microsoft.com/download/dotnet/9.0)

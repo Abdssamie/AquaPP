@@ -1,4 +1,5 @@
 using System.Text.Json;
+using Moondesk.Domain.Enums;
 using Moondesk.Domain.Models.IoT;
 using MQTTnet;
 using MQTTnet.Protocol;

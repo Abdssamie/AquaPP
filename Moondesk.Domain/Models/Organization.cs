@@ -13,6 +13,7 @@ public class Organization
     public required string OwnerId { get; set; }
     
     public SubscriptionPlan SubscriptionPlan { get; set; } = SubscriptionPlan.Free;
+    
     public int StorageLimitGB { get; set; } = 5;
     
     public DateTime CreatedAt { get; set; } = DateTime.UtcNow;

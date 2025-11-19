@@ -299,7 +299,7 @@ public class ReadingRepository
 ```json
 {
   "ConnectionStrings": {
-    "DefaultConnection": "Host=localhost;Port=5432;Database=moondesk;Username=postgres;Password=yourpassword"
+    "DefaultConnection": "Host=localhost;Port=5433;Database=moondesk;Username=postgres;Password=yourpassword"
   }
 }
 ```

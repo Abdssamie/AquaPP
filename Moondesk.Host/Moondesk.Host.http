@@ -1,0 +1,6 @@
+@Moondesk.Host_HostAddress = http://localhost:5008
+
+GET {{Moondesk.Host_HostAddress}}/weatherforecast/
+Accept: application/json
+
+###
